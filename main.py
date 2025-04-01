@@ -41,9 +41,9 @@ from sentence_transformers import SentenceTransformer
 
 # a =model.encode('hello')
 # print(a)
-from langchain.embeddings import HuggingFaceEmbeddings
+from langchain_huggingface import HuggingFaceEmbeddings
 embedding_model = HuggingFaceEmbeddings(
-    model_name="C:/Users/SSS/MACHINE LEARNING/NewsChat/all-MiniLM-L6-v2"
+    model_name="all-MiniLM-L6-v2"
 )
 
 
