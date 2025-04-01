@@ -9,4 +9,3 @@ faiss-cpu
 streamlit
 python-dotenv
 unstructured
-pickle5 
