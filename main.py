@@ -42,9 +42,11 @@ from sentence_transformers import SentenceTransformer
 # a =model.encode('hello')
 # print(a)
 from langchain_huggingface import HuggingFaceEmbeddings
-embedding_model = HuggingFaceEmbeddings(
-    model_name="all-MiniLM-L6-v2"
-)
+# embedding_model = HuggingFaceEmbeddings(
+#     model_name="all-MiniLM-L6-v2"
+# )
+from langchain_huggingface import HuggingFaceEndpointEmbeddings
+embedding_model = HuggingFaceEndpointEmbeddings(model='sentence-transformers/all-MiniLM-L6-v2')
 
 
 from langchain.vectorstores import FAISS
@@ -91,6 +93,7 @@ if(process_url_onclick):
 
     with open(file_path,"wb") as f :
         pickle.dump(vector_store,f)
+    # st.session_state.vector_store = vector_store
 
 # queries =[]
 if "queries" not in st.session_state:
@@ -104,6 +107,8 @@ import os
 if query :
     if os.path.exists(file_path):
         with open(file_path,"rb") as f :
+        # if "vector_store" in st.session_state:
+            # vector_store = st.session_state.vector_store
             placeholder.text('loading...')
             vector_store = pickle.load(f)
             chain = RetrievalQAWithSourcesChain.from_llm(llm= model ,retriever=vector_store.as_retriever())
