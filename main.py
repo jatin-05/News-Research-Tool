@@ -108,10 +108,10 @@ if query :
     # if os.path.exists(file_path):
     #     with open(file_path,"rb") as f :
     if "vector_store" in st.session_state:
-        vector_store = st.session_state.vector_store
+        # vector_store = st.session_state.vector_store
         placeholder.text('loading...')
         # vector_store = pickle.load(f)
-        chain = RetrievalQAWithSourcesChain.from_llm(llm= model ,retriever=vector_store.as_retriever())
+        chain = RetrievalQAWithSourcesChain.from_llm(llm= model ,retriever=st.session_state.vector_store.as_retriever())
         result = chain.invoke({"question" : query}, return_only_outputs= True)
         # queries.append([query , result])
         st.session_state.queries.append([query, result])
@@ -124,7 +124,8 @@ if query :
         source_list =sources.split("\n")
         for s in source_list:
             st.write(s)
-
+    else :
+        placeholder.text("unable to process url")
 st.header(" ")
 
 st.subheader("History") ; 
