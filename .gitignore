@@ -1,4 +1,5 @@
 *.env
 .env
 *.pkl
+.pkl
 all-MiniLM-L6-v2/

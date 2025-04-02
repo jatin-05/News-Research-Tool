@@ -91,9 +91,9 @@ if(process_url_onclick):
     main_palceholder.text("data embedding started......")
     vector_store =FAISS.from_documents(docs , embedding_model)
 
-    with open(file_path,"wb") as f :
-        pickle.dump(vector_store,f)
-    # st.session_state.vector_store = vector_store
+    # with open(file_path,"wb") as f :
+    #     pickle.dump(vector_store,f)
+    st.session_state.vector_store = vector_store
 
 # queries =[]
 if "queries" not in st.session_state:
@@ -105,25 +105,25 @@ query = main_palceholder.text_input("question ?")
 placeholder = st.empty()
 import os
 if query :
-    if os.path.exists(file_path):
-        with open(file_path,"rb") as f :
-        # if "vector_store" in st.session_state:
-            # vector_store = st.session_state.vector_store
-            placeholder.text('loading...')
-            vector_store = pickle.load(f)
-            chain = RetrievalQAWithSourcesChain.from_llm(llm= model ,retriever=vector_store.as_retriever())
-            result = chain.invoke({"question" : query}, return_only_outputs= True)
-            # queries.append([query , result])
-            st.session_state.queries.append([query, result])
+    # if os.path.exists(file_path):
+    #     with open(file_path,"rb") as f :
+    if "vector_store" in st.session_state:
+        vector_store = st.session_state.vector_store
+        placeholder.text('loading...')
+        # vector_store = pickle.load(f)
+        chain = RetrievalQAWithSourcesChain.from_llm(llm= model ,retriever=vector_store.as_retriever())
+        result = chain.invoke({"question" : query}, return_only_outputs= True)
+        # queries.append([query , result])
+        st.session_state.queries.append([query, result])
 
-            st.header("Answer")
-            st.write(result["answer"])
-            placeholder.text("")
-            st.subheader('Sources')
-            sources = result['sources']
-            source_list =sources.split("\n")
-            for s in source_list:
-                st.write(s)
+        st.header("Answer")
+        st.write(result["answer"])
+        placeholder.text("")
+        st.subheader('Sources')
+        sources = result['sources']
+        source_list =sources.split("\n")
+        for s in source_list:
+            st.write(s)
 
 st.header(" ")
 
